@@ -1,0 +1,38 @@
+name: Workspace Audit & Validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run UAV Contest 2027 Project Audit
+        run: python .agents/skills/uav-pm-orchestrator/scripts/project_audit.py
+
+      - name: Validate Three.js Web Arena data & bridge syntax
+        run: |
+          python -c "
+          import json, pathlib, py_compile
+          p = pathlib.Path('Web_Arena_Simulation')
+          d = json.loads((p / 'data/scenarios.json').read_text(encoding='utf-8'))
+          assert len(d['scenarios']) == 4
+          for fn in ('sample_cabp_log.jsonl', 'sample_ground_truth.jsonl'):
+              for line in (p / 'data' / fn).read_text(encoding='utf-8').splitlines():
+                  if line.strip():
+                      json.loads(line)
+          py_compile.compile(str(p / 'bridge/cabp_ws_bridge.py'), doraise=True)
+          print('Web_Arena_Simulation validation OK')
+          "

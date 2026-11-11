@@ -1,0 +1,17 @@
+{"t":0.0,"source":"CABP_ESTIMATED","agent_id":101,"seq":1,"state":"IDLE","intent":"HOVER","pos":[-10.02,-2.48,0.16],"battery_critical":false}
+{"t":0.0,"source":"CABP_ESTIMATED","agent_id":102,"seq":1,"state":"IDLE","intent":"HOVER","pos":[-9.98,2.52,0.15],"battery_critical":false}
+{"t":2.0,"source":"CABP_ESTIMATED","agent_id":101,"seq":11,"state":"EXECUTING","intent":"GO_TO_POINT","pos":[-8.5,-2.3,1.72],"battery_critical":false}
+{"t":2.0,"source":"CABP_ESTIMATED","agent_id":102,"seq":11,"state":"IDLE","intent":"HOVER","pos":[-10.01,2.49,0.16],"battery_critical":false}
+{"t":4.0,"source":"CABP_ESTIMATED","agent_id":101,"seq":21,"state":"EXECUTING","intent":"GO_TO_POINT","pos":[-5.1,-2.42,1.68],"battery_critical":false}
+{"t":4.0,"source":"CABP_ESTIMATED","agent_id":102,"seq":21,"state":"IDLE","intent":"HOVER","pos":[-9.99,2.51,0.15],"battery_critical":false}
+{"t":6.0,"source":"CABP_ESTIMATED","agent_id":101,"seq":31,"state":"EXECUTING","intent":"DELIVER","pos":[0.15,0.08,0.42],"battery_critical":false}
+{"t":6.0,"source":"CABP_ESTIMATED","agent_id":102,"seq":31,"state":"IDLE","intent":"HOVER","pos":[-10.0,2.5,0.15],"battery_critical":false}
+{"t":6.2,"source":"CABP_EVENT","agent_id":101,"event_type":"PACKAGE_PLACED","location_id":3}
+{"t":8.0,"source":"CABP_ESTIMATED","agent_id":101,"seq":41,"state":"RETURNING","intent":"RETURN_HOME","pos":[-2.4,-0.8,2.15],"battery_critical":false}
+{"t":8.0,"source":"CABP_ESTIMATED","agent_id":102,"seq":41,"state":"EXECUTING","intent":"GO_TO_POINT","pos":[-3.2,0.1,2.25],"battery_critical":false}
+{"t":10.0,"source":"CABP_ESTIMATED","agent_id":101,"seq":51,"state":"RETURNING","intent":"RETURN_HOME","pos":[-6.5,-2.1,1.75],"battery_critical":false}
+{"t":10.0,"source":"CABP_ESTIMATED","agent_id":102,"seq":51,"state":"EXECUTING","intent":"PICKUP","pos":[0.08,-0.05,0.4],"battery_critical":false}
+{"t":12.0,"source":"CABP_ESTIMATED","agent_id":101,"seq":61,"state":"LANDING","intent":"LAND","pos":[-9.95,-2.45,0.2],"battery_critical":false}
+{"t":12.0,"source":"CABP_ESTIMATED","agent_id":102,"seq":61,"state":"RETURNING","intent":"RETURN_HOME","pos":[-5.2,1.9,3.45],"battery_critical":false}
+{"t":14.0,"source":"CABP_ESTIMATED","agent_id":101,"seq":71,"state":"IDLE","intent":"LAND","pos":[-10.0,-2.5,0.15],"battery_critical":false}
+{"t":14.0,"source":"CABP_ESTIMATED","agent_id":102,"seq":71,"state":"LANDING","intent":"LAND","pos":[-9.96,2.47,0.18],"battery_critical":false}

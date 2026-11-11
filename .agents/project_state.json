@@ -1,0 +1,172 @@
+{
+  "project": "UAV Contest 2027 & CPAS Lab Foundation",
+  "schema_version": "1.0",
+  "last_updated": "2026-11-11",
+  "leadership": {
+    "principal_investigator": "TS. Trí Viễn Vũ",
+    "scientific_secretary": "TS. Trần Đức Anh Minh",
+    "tracks": {
+      "Track_A_CABP": "01 HVCH (đề xuất: Nguyễn Anh Dũng)",
+      "Track_B_Localization": "01 HVCH (đề xuất: Lê Tấn Phước)",
+      "Track_C_Collision_Integration": "01 HVCH (đề xuất: Lý Võ Đông Giang)",
+      "Tech_Support": "02 SV (Nguyễn Ngọc Thiện, Trần Hoàng Linh)"
+    }
+  },
+  "key_dates": {
+    "basic_research_start": "2026-11-01",
+    "basic_research_end": "2027-06-30",
+    "official_rules_publish_deadline": "2027-03-31",
+    "contest_dates": ["2027-09-20", "2027-09-21"],
+    "tdtu_30yr_anniversary": "2027-09-24"
+  },
+  "shared_contract": {
+    "arena_dimensions_m": [12.0, 24.0],
+    "cabp_udp_port": 14555,
+    "cabp_magic_hex": "0xCB",
+    "periodic_beacon_bytes": 31,
+    "periodic_beacon_hz": 5,
+    "stale_threshold_ms": 500,
+    "mission_event_bytes": 16,
+    "mission_event_timeout_s": 3.0,
+    "d_min_m": 1.5,
+    "t1_uav_a_s": 90,
+    "t2_uav_b_s": 120,
+    "coordinated_ops_max_min": 7
+  },
+  "workstreams": [
+    {
+      "id": "WS1",
+      "name": "UAV Contest 2027 Rules & Governance",
+      "owner_skill": "rules-sim-sync",
+      "status": "IN_PROGRESS",
+      "canonical_files": [
+        "Rules/LUAT_THI_DAU_CHINH_THUC_UAV_CONTEST_2027.md",
+        "Rules/uav_contest_2027_rules.tex",
+        "Rules/uav_contest_2027_rules_en.tex"
+      ],
+      "notes": "Official Rules MD + LaTeX VI/EN drafted (2026-11-02). Needs consistency sync and Technical Board publication before Q1/2027."
+    },
+    {
+      "id": "WS2",
+      "name": "CABP (CPAS Agent Beacon Protocol)",
+      "owner_skill": "cabp-protocol-track",
+      "status": "IN_PROGRESS",
+      "canonical_files": [
+        "26_Sep_26/CABP_Technical_Specification_v0.3.md",
+        "CABP_Starter_Kit/cabp_lite.py",
+        "CABP_Starter_Kit/mock_uav_a.py",
+        "CABP_Starter_Kit/mock_uav_b.py"
+      ],
+      "notes": "Spec v0.3 and Python CABP Lite Starter Kit complete. Pending C++ port, formal unit tests, 2-board bench test (M2), and time sync/stale demo (M3)."
+    },
+    {
+      "id": "WS3",
+      "name": "CPAS Localization & Ground Truth",
+      "owner_skill": "localization-safety-track",
+      "status": "DESIGN_LOCKED_PENDING_PROCUREMENT",
+      "canonical_files": [
+        "CPAS_Localization_Technical_Note_v0.1.md",
+        "UAV_Contest_2027_Du_Toan_Kinh_Phi.xlsx"
+      ],
+      "notes": "Ground Truth locked to 6-cam Global Shutter Overhead + AprilTag (targeted coverage). Pending venue ceiling survey (A4.7) and UWB/camera procurement."
+    },
+    {
+      "id": "WS4",
+      "name": "TDTU Basic Research Grant & Ops/Comms",
+      "owner_skill": "admin-grant-comms",
+      "status": "ACTIVE",
+      "canonical_files": [
+        "Ke_hoach_dieu_phoi_quan_ly_thuc_hien_de_tai.md",
+        "TO_TRINH_BGH_UAV_CONTEST_2027_AND_CPAS_LAB.md",
+        "UAV_Contest_2027_Du_Toan_Kinh_Phi.xlsx"
+      ],
+      "notes": "8-month execution window started 2026-11-01. Confirm KH-CN TDTU mid-term/final report dates and finalize track personnel."
+    },
+    {
+      "id": "WS5",
+      "name": "CPAS Safety & Collision Replay",
+      "owner_skill": "localization-safety-track",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": ["WS2", "WS3"],
+      "canonical_files": [
+        "MATLAB_Arena_Simulation/mission_multi_uav_coordinated_ops.m",
+        "MATLAB_Arena_Simulation/simulate_arena_mission.m"
+      ],
+      "notes": "Simulates D_MIN >= 1.5 m in MATLAB. Real blackbox/replay starts 05-08/2027 once WS2+WS3 produce real flight logs."
+    }
+  ],
+  "milestones_and_gates": [
+    {
+      "gate": "Gate 1",
+      "milestones": ["M1", "M2"],
+      "target_window": "2026-12 to 2027-01",
+      "status": "IN_PROGRESS",
+      "exit_criteria": [
+        "cpas_beacon runs both Debug (JSON) and Production (Binary) variants with automated test coverage",
+        "2-board bench-test latency and packet loss report completed with measured values"
+      ]
+    },
+    {
+      "gate": "Gate 2",
+      "milestones": ["M3"],
+      "target_window": "2027-02",
+      "status": "NOT_STARTED",
+      "exit_criteria": [
+        "Simulated disconnect triggers safety mode at STALE_THRESHOLD",
+        "Companion computer clock drift measured experimentally"
+      ]
+    },
+    {
+      "gate": "Gate 3",
+      "milestones": ["M4", "M5"],
+      "target_window": "2027-04 to 2027-05",
+      "status": "NOT_STARTED",
+      "exit_criteria": [
+        "Collision logic simulation + real flight demo video on 2 UAVs",
+        "Complete raw CABP logs and Ground Truth logs stored separately"
+      ]
+    },
+    {
+      "gate": "Gate 4",
+      "milestones": ["M6"],
+      "target_window": "2027-06",
+      "status": "NOT_STARTED",
+      "exit_criteria": [
+        "Preliminary localization benchmark report complete",
+        "TDTU basic research final report ready for submission"
+      ]
+    }
+  ],
+  "open_decisions_and_blockers": [
+    {
+      "id": "DEC-01",
+      "priority": "CRITICAL",
+      "title": "Hardware procurement (UWB anchors, 6 Global Shutter cameras, companion computers)",
+      "note": "16-24 week lead time risk; must trigger quotes/PO immediately to avoid slipping M2-M3."
+    },
+    {
+      "id": "DEC-02",
+      "priority": "HIGH",
+      "title": "Survey actual ceiling height at TDTU Tân Phong Arena",
+      "note": "Determines final camera count/placement and whether budget item A4.7 (10M VND rigging contingency) is needed."
+    },
+    {
+      "id": "DEC-03",
+      "priority": "HIGH",
+      "title": "Confirm Track A/B/C HVCH & SV assignments + semester schedules",
+      "note": "Kickoff action from Ke_hoach_dieu_phoi_quan_ly_thuc_hien_de_tai.md §2.1 & §9."
+    },
+    {
+      "id": "DEC-04",
+      "priority": "MEDIUM",
+      "title": "Confirm TDTU Phòng QLKH mid-term / final reporting dates",
+      "note": "Placeholder in Ke_hoach_dieu_phoi_quan_ly_thuc_hien_de_tai.md §3."
+    },
+    {
+      "id": "DEC-05",
+      "priority": "MEDIUM",
+      "title": "Resolve spec/doc discrepancies flagged by project_audit.py",
+      "note": "E.g., cabp_lite.py docstring 29 vs 31 bytes, D_MIN 1.0m in CABP v0.3 vs 1.5m in Official Rules, BGH pitch 25x30m vs Official Rules 12x24m, Rules TOC numbering XI vs XII."
+    }
+  ]
+}

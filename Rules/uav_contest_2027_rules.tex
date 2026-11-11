@@ -1,0 +1,559 @@
+% !TEX program = xelatex
+% ============================================================
+%  COMPETITION RULES — UAV CONTEST 2027
+%  The 4th International Competition on Research and Design
+%  of Unmanned Aerial Vehicles — Ton Duc Thang University
+%  Văn bản chính thức ban hành — Đã phê duyệt toàn bộ thông số
+% ============================================================
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.4cm}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning, calc, arrows.meta}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tocloft}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{colortbl}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!50!black,
+    urlcolor=blue!50!black,
+    pdftitle={UAV Contest 2027 - Official Competition Rules},
+    pdfauthor={TDTU - Ban To chuc UAV Contest}
+}
+
+\renewcommand{\thesection}{\Roman{section}}
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{0.6em}{}
+
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\fancyhf{}
+\fancyhead[L]{\small UAV Contest 2027 — Competition Rules (Official)}
+\fancyhead[R]{\small Ban hành: Tháng 9/2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\definecolor{depotgreen}{RGB}{46,139,87}
+\definecolor{pickupyellowbg}{RGB}{255,243,205}
+\definecolor{redpt}{RGB}{252,42,27}
+\definecolor{yellowpt}{RGB}{250,255,55}
+\definecolor{bluept}{RGB}{60,0,251}
+\definecolor{approvedgreen}{RGB}{0,128,0}
+\definecolor{headerblue}{RGB}{31,78,120}
+
+\newcommand{\approved}[1]{\textcolor{approvedgreen}{\textbf{[CHÍNH THỨC: #1]}}}
+\newcommand{\newmark}{\textcolor{headerblue}{\textbf{[MỚI]}}}
+
+\setlist[itemize]{leftmargin=1.6em}
+\setlist[enumerate]{leftmargin=1.8em}
+
+\begin{document}
+
+% ============================================================
+\begin{titlepage}
+\centering
+\vspace*{1.2cm}
+{\Large\bfseries TRƯỜNG ĐẠI HỌC TÔN ĐỨC THẮNG}\\[0.2cm]
+{\large KHOA ĐIỆN – ĐIỆN TỬ \& PHÒNG THÍ NGHIỆM CPAS LAB}\\[1.6cm]
+
+{\Huge\bfseries LUẬT THI ĐẤU CHÍNH THỨC}\\[0.4cm]
+{\Large\bfseries UAV CONTEST 2027}\\[0.6cm]
+{\large The 4th International Competition on Research}\\
+{\large and Design of Unmanned Aerial Vehicles}\\[0.6cm]
+{\large Chào mừng 30 năm thành lập Trường Đại học Tôn Đức Thắng (1997 -- 2027)}\\[0.3cm]
+{\large Ngày tổ chức chính thức: \textbf{20, 21 - 09 - 2027}}\\[0.3cm]
+{\normalsize Địa điểm: Nhà thi đấu Đa năng Cơ sở chính Tân Phong, TP. Hồ Chí Minh}\\[2.0cm]
+
+{\large\bfseries Chủ đề: HỆ SINH THÁI LOGISTICS TỰ HÀNH TẦM THẤP}\\
+{\normalsize (Autonomous Low-Altitude Logistics Ecosystem)}\\[2.5cm]
+
+{\normalsize Phiên bản: \textbf{Bản Quy chuẩn Chính thức (Official Rules)}}\\[0.3cm]
+{\normalsize Đã chốt toàn bộ thông số kỹ thuật thi đấu}\\[2cm]
+
+\vfill
+{\small Bản quy chuẩn chính thức do Ban Tổ chức UAV Contest ban hành. Áp dụng chính thức cho các đội thi tranh tài vào ngày 20, 21 - 09 - 2027.}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{MỤC ĐÍCH VÀ BỐI CẢNH}
+
+Nền kinh tế tầm thấp (low-altitude economy) và logistics tự hành đang trở thành một trụ cột hạ tầng số quan trọng trong định hướng phát triển khoa học, công nghệ và đổi mới sáng tạo quốc gia theo tinh thần Quyết định số 808/QĐ-TTg của Thủ tướng Chính phủ. Khác với các kịch bản ứng phó khẩn cấp truyền thống — nơi một thiết bị bay không người lái (UAV) hoạt động độc lập cho một nhiệm vụ đơn lẻ — hạ tầng logistics tầm thấp thực tế vận hành trên nguyên tắc căn bản khác: nhiều tác nhân (UAV, robot mặt đất, trạm trung chuyển) cùng chia sẻ một không gian vật lý và phải phối hợp an toàn, hiệu quả, mà không nhất thiết cần một bộ điều khiển trung tâm duy nhất điều phối mọi hành vi theo thời gian thực.
+
+UAV Contest 2027 mô phỏng một \textbf{Trung tâm Phân phối Hàng hóa Tự động Tầm thấp} (Autonomous Logistics Hub). Mỗi đội thi vận hành thiết bị bay không người lái (UAV) tự chế tạo để thực hiện chuỗi nhiệm vụ: lấy hàng hóa từ điểm nguồn, vận chuyển, và giao hàng chính xác đến điểm đích — bao gồm cả điểm đích đang di chuyển. Cuộc thi được tổ chức thành ba vòng đấu (Vòng loại, Bán kết, Chung kết) với độ khó và mức độ tự chủ tăng dần, cùng một hạng mục tự nguyện mới — \textbf{Coordinated Ops} — kiểm tra năng lực phối hợp giữa hai UAV thông qua giao thức truyền thông chuẩn hóa CPAS Agent Beacon Protocol (CABP).
+
+% ============================================================
+\section{MỤC TIÊU CUỘC THI}
+
+\begin{itemize}
+\item \textbf{Ứng dụng thực tiễn:} Phát triển và tối ưu hóa việc triển khai UAV cho vận hành logistics tầm thấp — lấy hàng, vận chuyển, và giao hàng chính xác trong một môi trường mô phỏng thực tế.
+\item \textbf{Đổi mới sáng tạo:} Thúc đẩy tinh thần sáng tạo trong thiết kế cơ khí, tích hợp hệ thống điện tử, và lập trình điều khiển bay nâng cao trong môi trường không có GPS (GPS-denied).
+\item \textbf{Đánh giá năng lực toàn diện:} Kiểm tra đồng thời kỹ năng điều khiển thủ công, năng lực vận hành hoàn toàn tự động (ứng dụng trí tuệ nhân tạo và thị giác máy tính tại biên), và năng lực phối hợp đa tác nhân (multi-agent) giữa hai UAV hoạt động trong cùng một không gian chia sẻ.
+\end{itemize}
+
+% ============================================================
+\section{THÔNG SỐ KỸ THUẬT UAV}
+
+\subsection*{1. Cấu hình chung}
+\begin{itemize}
+\item \textbf{Kích thước tối đa:} $1.0 \times 1.0 \times 1.0$ mét (bao gồm cánh quạt và khung bảo vệ cánh quạt).
+\item \textbf{Trọng lượng cất cánh tối đa (MTOW):} $\leq 5.0$ kg (bao gồm pin và toàn bộ thiết bị nhiệm vụ mang theo).
+\item \textbf{Hệ thống nguồn:}
+  \begin{itemize}
+    \item Loại pin: LiPo/Li-ion, cấu hình tối đa 6S.
+    \item Số lượng: tối đa 3 gói pin.
+    \item Tổng dung lượng năng lượng: $\leq 300$ Wh.
+  \end{itemize}
+\item \textbf{Tải trọng:} UAV được phép mang tối đa năm (05) kiện hàng mô phỏng khi cất cánh cho pha giao hàng tự động. Đối với pha tự động, đội phải nạp sẵn kiện hàng trước khi trận đấu bắt đầu.
+\item \textbf{Toàn vẹn hệ thống:} Toàn bộ hệ thống điện và cơ khí phải đảm bảo tiêu chuẩn an toàn cao, không có nguy cơ rò rỉ điện, đoản mạch, hoặc cháy nổ.
+\end{itemize}
+
+\subsection*{2. Yêu cầu an toàn bắt buộc}
+\begin{itemize}
+\item \textbf{Bảo vệ cánh quạt:} Bắt buộc lắp đặt khung/lồng bảo vệ ($100\%$) cho toàn bộ cánh quạt.
+\item \textbf{Ghi đè thủ công:} Phải có chế độ điều khiển thủ công khẩn cấp, có thể kích hoạt ngay lập tức.
+\item \textbf{Cơ chế Fail-safe:} Tự động kích hoạt Return-to-Home (RTH) hoặc hạ cánh khẩn cấp khi mất tín hiệu RC/Telemetry quá 3 giây hoặc pin yếu.
+\item \textbf{Đèn báo trạng thái:} Đèn LED hiển thị trạng thái (khuyến khích lắp đặt).
+\item \textbf{An toàn con người:} Thiết kế vật lý của UAV không được gây nguy hiểm cho người vận hành hoặc trọng tài.
+\item \textbf{Bức xạ laser:} Tuân thủ tiêu chuẩn IEC 60825-1, tối đa Class 2 (2M). Nghiêm cấm tuyệt đối bức xạ ion hóa.
+\end{itemize}
+
+\subsection*{3. Hệ thống điều khiển}
+\begin{itemize}
+\item \textbf{Pha 1 — Lấy hàng (Pickup):} Cho phép điều khiển thủ công hoặc bán tự động.
+\item \textbf{Pha 2 — Giao hàng (Delivery):} Bắt buộc bay hoàn toàn tự động theo waypoint hoặc thị giác máy tính. Nghiêm cấm can thiệp thủ công, trừ tình huống khẩn cấp được trọng tài xác nhận.
+\item \textbf{Track Coordinated Ops:} Cả hai UAV của đội đăng ký track này phải duy trì phát bản tin trạng thái chuẩn hóa (CABP) tối thiểu $5\text{ Hz}$ liên tục trong suốt thời gian bay.
+\end{itemize}
+
+\subsection*{4. Thiết bị thu phát vô tuyến và hệ thống tương tự}
+\begin{itemize}
+\item \textbf{Tuân thủ quy định:} Mọi thiết bị truyền phát vô tuyến tuân thủ nghiêm ngặt Luật Tần số Vô tuyến điện của Việt Nam.
+\item \textbf{Cấm đặt thiết bị trên sân thi đấu:} Nghiêm cấm đặt bất kỳ thiết bị định vị vô tuyến nào (anchor định vị, beacon tín hiệu) trực tiếp trên bề mặt thi đấu (Playfield).
+\item \textbf{Cho phép UWB ngoài sân:} Hệ thống định vị sử dụng anchor đặt bên ngoài sân thi đấu trong khu vực Perimeter (ví dụ: UWB RTLS) được phép sử dụng hoàn toàn hợp lệ.
+\item \textbf{Miễn trừ trách nhiệm tín hiệu:} Ban Tổ chức cấp phát kênh Wi-Fi riêng cho từng đội nhưng khuyến cáo đội cần có phương án dự phòng cho khả năng can nhiễu sóng.
+\end{itemize}
+
+\subsection*{5. Cơ cấu xử lý kiện hàng}
+\begin{itemize}
+\item \textbf{Cơ cấu lấy hàng (Gripping):} Không gây hư hại cấu trúc cho mô hình kiện hàng lớn. Lực nâng tối thiểu $\geq 300$g. Có khóa an toàn chống rơi ngoài ý muốn.
+\item \textbf{Hệ thống thả hàng (Dispensing):} Có khả năng thả từng kiện hàng riêng lẻ, chính xác. Sức chứa tối thiểu 05 kiện hàng khi cất cánh. Khi thả hàng, điểm thấp nhất của UAV phải duy trì độ cao tối thiểu $\geq 3.0$ mét so với sàn.
+\end{itemize}
+
+\subsection*{6. Vật liệu thi đấu chuẩn hóa}
+\begin{itemize}
+\item \textbf{Kiện hàng mô phỏng nhỏ (Package Simulants):} Chốt sử dụng \textbf{bóng tennis tiêu chuẩn}, đường kính $65.41$–$68.58$ mm, khối lượng $56.0$–$59.4$ g, dùng để giao vào các Điểm Giao hàng D1–D5.
+\item \textbf{Mô hình kiện hàng lớn (Package Models):} Khối cứng hình lập phương $0.3 \times 0.3 \times 0.3$ mét, trọng lượng $300$ gram, có tay cầm hoặc móc tích hợp.
+\end{itemize}
+
+% ============================================================
+\section{THÔNG SỐ SÂN THI ĐẤU}
+
+\begin{itemize}
+\item \textbf{Kích thước tổng thể:} $12.0 \times 24.0$ mét.
+\item \textbf{Khu Trạm xuất phát (Depot):} $12.0 \times 3.5$ mét — chứa bệ đáp và vị trí khởi hành/kết thúc nhiệm vụ.
+\item \textbf{Hành lang bay kiểm soát (Air Corridor Checkpoints — ACC1 đến ACC4):} Đường kính trong khung $1.6$ mét; tâm cao $1.7$ mét; chiều cao đỉnh khung $2.6$ mét. ACC1–ACC2 dùng cho hành trình đi; ACC3–ACC4 dùng cho hành trình về.
+\item \textbf{Khu Lấy hàng (Pickup Area):} $12.0 \times 4.5$ mét. Trạm Lấy hàng P1, P2, P3 kích thước $1.0 \times 1.0$ mét, độ cao $1.0$ mét so với sàn.
+\item \textbf{Điểm Giao hàng (Delivery Points — D1 đến D5):} Độ cao $0.1$ mét so với sàn, trang bị cảm biến tích hợp ghi điểm tự động.
+\item \textbf{Giới hạn độ cao vận hành:} Bay thủ công $\leq 5.0$ mét; Bay tự động $3.0$–$5.0$ mét.
+\item \textbf{Trạm Nhận hàng Di động (Mobile Receiver — chỉ áp dụng ở Vòng Chung kết):} Di chuyển tuyến tính (tới–lui) với vận tốc không đổi \textbf{$10$ cm/s} dọc theo ray dẫn hướng cố định.
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.42, every node/.style={font=\footnotesize}]
+  % Overall arena outline: width 24 (x), height 12 (y)
+  \draw[thick] (0,0) rectangle (24,12);
+
+  % Pickup Area (left band, 4.5m wide)
+  \fill[pickupyellowbg] (0,0) rectangle (4.5,12);
+  \draw[thick] (4.5,0) -- (4.5,12);
+  \node[align=center] at (2.25,11.5) {\textbf{Khu Lấy hàng}};
+  \node[draw, fill=white, minimum width=1cm, minimum height=1cm] (P1) at (2.25,2.5) {P1};
+  \node[draw, fill=white, minimum width=1cm, minimum height=1cm] (P2) at (2.25,6.0) {P2};
+  \node[draw, fill=white, minimum width=1cm, minimum height=1cm] (P3) at (2.25,9.5) {P3};
+
+  % Depot (right band, 3.5m wide)
+  \fill[depotgreen!25] (20.5,0) rectangle (24,12);
+  \draw[thick] (20.5,0) -- (20.5,12);
+  \node at (22.25,11.5) {\textbf{Depot}};
+  \node[draw, fill=white, minimum width=1.2cm, minimum height=1.2cm] (SZ) at (22.25,6.0) {SZ};
+
+  % Middle zone
+  \node[align=center] at (12.5,11.5) {\textbf{Hành lang bay \& Giao hàng}};
+
+  % ACC gates
+  \draw[thick] (16,9.5) circle (0.5); \node at (16,10.3) {ACC1};
+  \draw[thick] (11,9.5) circle (0.5); \node at (11,10.3) {ACC2};
+  \draw[thick] (16,2.5) circle (0.5); \node at (16,1.7) {ACC4};
+  \draw[thick] (11,2.5) circle (0.5); \node at (11,1.7) {ACC3};
+
+  % Delivery points D1..D5
+  \draw[fill=redpt] (18,6.4) circle (0.55); \node[white] at (18,6.4) {D1};
+  \draw[fill=redpt] (14.5,6.4) circle (0.55); \node[white] at (14.5,6.4) {D2};
+  \draw[fill=yellowpt] (14.5,8.2) circle (0.4); \node at (14.5,8.2) {D3};
+  \draw[fill=yellowpt] (14.5,4.6) circle (0.4); \node at (14.5,4.6) {D4};
+  \draw[fill=bluept] (13.0,6.4) circle (0.3); \node[white] at (13.0,6.4) {\tiny D5};
+
+  % Mobile receiver rail
+  \draw[dashed] (14.5,6.4) -- (20.5,6.4);
+  \node[align=center, font=\tiny] at (17.3,3.4) {đường dẫn Mobile Receiver\\(chỉ Vòng Chung kết)};
+
+  % Dimension annotations
+  \draw[<->] (0,-0.6) -- (4.5,-0.6); \node at (2.25,-1.1) {4.5 m};
+  \draw[<->] (4.5,-0.6) -- (20.5,-0.6); \node at (12.5,-1.1) {16.0 m};
+  \draw[<->] (20.5,-0.6) -- (24,-0.6); \node at (22.25,-1.1) {3.5 m};
+  \draw[<->] (-0.6,0) -- (-0.6,12); \node[rotate=90] at (-1.1,6) {12.0 m};
+  \draw[<->] (24.6,0) -- (24.6,12); \node[rotate=90] at (25.1,6) {12.0 m};
+\end{tikzpicture}
+\caption{Sơ đồ bố trí sân thi đấu tổng thể $12 \times 24$ m. D1,D2: đỏ ($\varnothing$1.0m); D3,D4: vàng ($\varnothing$0.6m); D5: xanh ($\varnothing$0.4m).}
+\end{figure}
+
+% ============================================================
+\section{YÊU CẦU NHIỆM VỤ THI ĐẤU}
+
+\subsection*{A. VÒNG LOẠI (Preliminary Round)}
+\paragraph{Pha 1 — Lấy hàng (Thủ công hoặc bán tự động)}
+\begin{enumerate}
+\item \textbf{Cất cánh và tiếp cận:} UAV xuất phát tại Depot, bay chui qua tâm hai cổng ACC1 và ACC2.
+\item \textbf{Thực hiện lấy hàng:} Tiếp cận bệ P1, P2 hoặc P3, gắp đúng 01 kiện hàng lớn.
+\item \textbf{Vận chuyển và quay về:} Vận chuyển kiện hàng quay về qua tâm hai cổng ACC3 và ACC4, đặt an toàn trong Depot.
+\item \textbf{Hạ cánh:} Hạ cánh có kiểm soát tại bệ đáp quy định.
+\end{enumerate}
+
+\paragraph{Pha 2 — Giao hàng (Bay hoàn toàn tự động 100\%)}
+\begin{itemize}
+\item \textbf{Nhiệm vụ 1 — Cất cánh tự động:} Đội kích hoạt chế độ bay tự động; UAV tự nâng độ cao an toàn $\geq 3.0$ mét không can thiệp RC.
+\item \textbf{Nhiệm vụ 2 — Giao hàng chính xác:} UAV tự điều hướng đến tọa độ D1–D5 và thả bóng tennis vào vòng tròn mục tiêu. Ở Vòng Loại, tọa độ các điểm D1–D5 là \textbf{CỐ ĐỊNH} theo sơ đồ công bố. Mỗi điểm chỉ tính điểm lần đầu tiên thả trúng.
+\item \textbf{Nhiệm vụ 3 — Hạ cánh tự động chính xác:} Sau khi hoàn thành hoặc hết bóng, UAV tự bay về Depot, hạ cánh an toàn và tắt động cơ hoàn toàn.
+\end{itemize}
+
+\subsection*{B. BÁN KẾT (Semi-Final Round)}
+\begin{itemize}
+\item Pha 1 giữ nguyên quy trình Vòng Loại.
+\item Pha 2: Tọa độ D1–D5 \textbf{KHÔNG CÒN CỐ ĐỊNH}. Ban Trọng tài bốc thăm ngẫu nhiên trước mỗi trận đấu từ ma trận vị trí. UAV bắt buộc sử dụng Computer Vision để nhận diện mục tiêu.
+\end{itemize}
+
+\subsection*{C. CHUNG KẾT (Final Round)}
+\begin{itemize}
+\item Pha 1 giữ nguyên quy trình Vòng Loại.
+\item Pha 2: Tọa độ D1–D5 bốc thăm ngẫu nhiên. \textbf{Điểm D2 được gắn trên Trạm Nhận hàng Di động (Mobile Receiver)}, di chuyển tuyến tính tới-lui vận tốc $10$ cm/s dọc theo đường dẫn cố định.
+\end{itemize}
+
+\subsection*{D. HẠNG MỤC TỰ NGUYỆN: COORDINATED OPS — CƠ CHẾ "ĐẶT HÀNG — CHUYỂN TIẾP — LẤY HÀNG"}
+
+Hạng mục áp dụng cho đội đăng ký vận hành \textbf{hai UAV}: \textbf{UAV-A} (thủ công/bán tự động) và \textbf{UAV-B} (tự động hoàn toàn) theo chuỗi nối tiếp có ràng buộc thời gian:
+
+\paragraph{Quy chế thi đấu và xác minh}
+\begin{itemize}
+\item \textbf{Phân cấp thi đấu:} Hoàn toàn tự nguyện, tính điểm thưởng độc lập. Đội thi không tham gia hoặc thực hiện không thành công vẫn bảo lưu $100\%$ điểm vòng chuẩn.
+\item \textbf{Tập ứng viên bốc thăm:} Ban Trọng tài bốc thăm xác định chính xác \textbf{03 trong 05 điểm D} làm tập ứng viên hợp lệ (tập con 3/5).
+\item \textbf{Xác minh mã nguồn UAV-B:} Đội nộp mã băm \textbf{SHA-256} của phần mềm nạp trên UAV-B kèm bản sao file cho Ban Trọng tài trước giờ bốc thăm 30 phút. Trọng tài có quyền kiểm tra đối chiếu sau trận đấu.
+\item \textbf{Mã QR định danh:} Mỗi điểm D được dán mã QR tiêu chuẩn kích thước \textbf{$15 \times 15$ cm} tại tâm điểm.
+\end{itemize}
+
+\paragraph{Giai đoạn 1 — Đặt hàng (UAV-A)}
+Trong cửa sổ thời gian \textbf{$T_1 = 90$ giây}, UAV-A mang 01 kiện hàng đặt chính xác tại một trong 3 điểm thuộc tập ứng viên. Ngay sau khi đặt thành công, UAV-A phát bản tin `mission\_event` qua giao thức CABP.
+
+\paragraph{Giai đoạn 2 — Lấy hàng (UAV-B)}
+Trong cửa sổ thời gian \textbf{$T_2 = 120$ giây}, tính từ thời điểm Giai đoạn 1 kết thúc:
+\begin{itemize}
+\item \textbf{Đường Bonus (CABP thành công):} Nếu UAV-B nhận được bản tin `mission\_event` hợp lệ trong ngưỡng thời gian chờ \textbf{$3.0$ giây}, UAV-B bỏ qua bước quét và bay thẳng đến đúng điểm đích để gắp kiện hàng mang về Depot.
+\item \textbf{Đường Cơ bản (Fallback tự động):} Nếu hết $3.0$ giây không có bản tin hợp lệ, UAV-B \textbf{tự động chuyển sang} hành trình quét tuần tự các điểm ứng viên, đọc mã QR và xác nhận sự hiện diện vật lý của kiện hàng, sau đó gắp về Depot.
+\end{itemize}
+
+\paragraph{Thời gian trận đấu Coordinated Ops}
+Chốt chính thức \textbf{07 phút} (so với 5 phút của track chuẩn).
+
+% ============================================================
+\section{TIÊU CHÍ CHẤM ĐIỂM}
+
+\subsection*{A. Bảng điểm Vòng Loại và Bán kết}
+\begin{longtable}{p{3.0cm}p{6.0cm}p{3.8cm}p{1.6cm}}
+\toprule
+\textbf{Hạng mục} & \textbf{Chi tiết nhiệm vụ} & \textbf{Tiêu chí chấm điểm} & \textbf{Điểm tối đa} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Hạng mục} & \textbf{Chi tiết nhiệm vụ} & \textbf{Tiêu chí chấm điểm} & \textbf{Điểm tối đa} \\
+\midrule
+\endhead
+\multirow{3}{3.0cm}{Pha 1: Lấy hàng} & Vượt qua Hành lang bay (ACC1–ACC4) & 5 điểm/cổng & 20 \\
+ & Lấy và giao thành công kiện hàng về Depot & 20 điểm/kiện (P1–P3) & 60 \\
+ & Hạ cánh chính xác & 10 điểm & 10 \\
+\midrule
+\multicolumn{3}{r}{\textbf{Tổng Pha 1}} & \textbf{90} \\
+\midrule
+\multirow{5}{3.0cm}{Pha 2: Giao hàng} & Cất cánh tự động (độ cao $\geq 3.0$m) & 20 điểm & 20 \\
+ & Giao thành công D1, D2 (Đỏ, $\varnothing$1.0m) & 20 điểm $\times$ 2 vị trí & 40 \\
+ & Giao thành công D3, D4 (Vàng, $\varnothing$0.6m) & 30 điểm $\times$ 2 vị trí & 60 \\
+ & Giao thành công D5 (Xanh, $\varnothing$0.4m) & 50 điểm $\times$ 1 vị trí & 50 \\
+ & Hạ cánh chính xác tự động tại Depot & 30 điểm & 30 \\
+\midrule
+\multicolumn{3}{r}{\textbf{Tổng Pha 2}} & \textbf{200} \\
+\midrule
+\multicolumn{3}{r}{\textbf{TỔNG ĐIỂM CHUẨN}} & \textbf{290} \\
+\bottomrule
+\end{longtable}
+
+\subsection*{B. Bảng điểm Vòng Chung kết}
+\begin{longtable}{p{3.0cm}p{6.0cm}p{3.8cm}p{1.6cm}}
+\toprule
+\textbf{Hạng mục} & \textbf{Chi tiết nhiệm vụ} & \textbf{Tiêu chí chấm điểm} & \textbf{Điểm tối đa} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Hạng mục} & \textbf{Chi tiết nhiệm vụ} & \textbf{Tiêu chí chấm điểm} & \textbf{Điểm tối đa} \\
+\midrule
+\endhead
+Pha 1: Lấy hàng & (Giữ nguyên cấu trúc Vòng Loại) & & 90 \\
+\midrule
+\multirow{6}{3.0cm}{Pha 2: Giao hàng} & Cất cánh tự động & 10 điểm & 10 \\
+ & Giao thành công D1 cố định (Đỏ, $\varnothing$1.0m) & 10 điểm & 10 \\
+ & Giao thành công D2 động — Mobile Receiver (Đỏ, $\varnothing$1.0m) & 50 điểm & 50 \\
+ & Giao thành công D3, D4 (Vàng, $\varnothing$0.6m) & 30 điểm $\times$ 2 vị trí & 60 \\
+ & Giao thành công D5 (Xanh, $\varnothing$0.4m) & 50 điểm & 50 \\
+ & Hạ cánh chính xác tự động & 20 điểm & 20 \\
+\midrule
+\multicolumn{3}{r}{\textbf{Tổng Pha 2}} & \textbf{200} \\
+\midrule
+\multicolumn{3}{r}{\textbf{TỔNG ĐIỂM CHUNG KẾT}} & \textbf{290} \\
+\bottomrule
+\end{longtable}
+
+\subsection*{C. Điểm thưởng — Hạng mục Coordinated Ops (Đã chốt)}
+\begin{longtable}{p{10.5cm}p{3.5cm}}
+\toprule
+\textbf{Tiêu chí hoàn thành} & \textbf{Điểm thưởng} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Tiêu chí hoàn thành} & \textbf{Điểm thưởng} \\
+\midrule
+\endhead
+Hoàn thành chuỗi qua \textbf{Đường Bonus} (Nhận CABP thành công trong 3s, bay thẳng lấy hàng) & \textbf{+60 điểm} \\
+Hoàn thành chuỗi qua \textbf{Đường Cơ bản} (Quét tuần tự mã QR, lấy hàng thành công) & \textbf{+40 điểm} \\
+UAV-A đặt hàng hợp lệ trong $T_1$, UAV-B cất cánh nhưng chưa hoàn tất trong $T_2$ & \textbf{+10 điểm} \\
+Duy trì khoảng cách an toàn giữa hai UAV suốt trận ($\ge 1.5$m theo log CABP) & \textbf{+10 điểm} \\
+\bottomrule
+\end{longtable}
+
+% ============================================================
+\section{PHẠT LỖI VÀ VI PHẠM}
+
+\subsection*{1. Trừ điểm (Penalties)}
+\begin{itemize}
+\item \textbf{Va chạm chướng ngại vật:} Tiếp xúc khung cổng ACC: trừ 5 điểm/lần.
+\item \textbf{Vi phạm ranh giới:} Bay ra ngoài sân đấu quá 5 giây: trừ 5 điểm/lần.
+\item \textbf{Vi phạm độ cao:} Trong Pha 2 tự động, bay dưới $3.0$m quá 5 giây: trừ 5 điểm/lần.
+\item \textbf{Va chạm giữa 2 UAV (Coordinated Ops):} \textbf{Trừ 20 điểm và dừng ngay trận đấu} vì lý do an toàn bay.
+\end{itemize}
+
+\subsection*{2. Nhiệm vụ không hợp lệ}
+\begin{itemize}
+\item Kiện hàng rơi trước khi chạm sàn Depot: 0 điểm cho kiện đó.
+\item Bóng thả ra ngoài vòng tròn hoặc thả bóng thứ hai vào điểm đã hoàn thành: 0 điểm cho quả bóng đó.
+\end{itemize}
+
+\subsection*{3. Quy trình thử lại (Retry)}
+Tối đa một (01) lần thử lại/trận. Đồng hồ trận đấu \textbf{không dừng}. Toàn bộ điểm trước khi retry bị hủy để tính lại từ đầu.
+
+% ============================================================
+\section{QUY ĐỊNH AN TOÀN BẮT BUỘC}
+
+\begin{itemize}
+\item \textbf{Kiểm tra kỹ thuật tiền bay:} Trình diện UAV trước giờ thi 15 phút. Khung bảo vệ cánh quạt bắt buộc $100\%$. Pin phồng, biến dạng bị loại ngay lập tức.
+\item \textbf{Fail-safe và Emergency Stop:} Mất tín hiệu quá 3 giây phải tự động RTH hoặc hạ cánh khẩn cấp. Trạm GCS bắt buộc có nút E-Stop ngắt nguồn động cơ tức thì.
+\item \textbf{Trang bị bảo hộ (PPE):} Kính bảo hộ và giày kín mũi bắt buộc khi vào sân.
+\end{itemize}
+
+% ============================================================
+\section{KHIẾU NẠI VÀ TRỌNG TÀI}
+
+Khiếu nại phải nộp bằng văn bản trong vòng \textbf{05 phút} sau khi trận đấu kết thúc. Chỉ Đội trưởng mới có quyền khiếu nại. Quyết định của Hội đồng Trọng tài (BOJ) dựa trên video CCTV và nhật ký cảm biến là quyết định cuối cùng.
+
+% ============================================================
+\section{THỂ LỆ THAM GIA, ĐĂNG KÝ VÀ CƠ CHẾ LỆ PHÍ HAI LUỒNG}
+
+\subsection{Tiêu chuẩn thành viên và nhân sự đội thi}
+\begin{itemize}
+\item \textbf{Đối tượng tham gia:} Sinh viên đại học, học viên cao học, nghiên cứu sinh (NCS) từ các trường đại học, viện nghiên cứu trong nước và quốc tế.
+\item \textbf{Cơ cấu thành viên:} NCS tối đa 01; Thạc sĩ tối đa 02; Đại học tối đa 06; Tổng quy mô tối đa \textbf{06 thành viên} chính thức mỗi đội.
+\item \textbf{Nhân sự trong sân thi đấu (Coordinated Ops):} Đối với đội đăng ký Coordinated Ops, cho phép tối đa \textbf{02 thành viên} (01 phi công lái UAV-A và 01 kỹ thuật viên giám sát GCS UAV-B giữ công tắc dừng khẩn cấp E-Stop vật lý) được đồng thời có mặt tại khu vực kỹ thuật trong sân thi đấu.
+\end{itemize}
+
+\subsection{Cơ chế lệ phí hai luồng (Dual-Track Fee Structure)}
+Nhằm đảm bảo công tác tổ chức đạt chuẩn mực quốc tế, cung cấp cơ sở hạ tầng thử nghiệm đẳng cấp và thúc đẩy gắn kết học thuật chuyên sâu, Ban Tổ chức thiết lập cơ chế lệ phí hai luồng cho \textbf{UAV CONTEST 2027}:
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item \textbf{Hạng mục Đối tác Học thuật Đồng tổ chức (Co-Hosting Academic Partner Tier) --- \$5,000 USD / Trường / Viện:}\\
+Dành riêng cho các trường đại học đối tác chiến lược và viện nghiên cứu lớn. Mức đóng góp này mang lại các quyền lợi đặc quyền:
+\begin{itemize}
+    \item Tư cách \textbf{Đồng tổ chức chính thức} (Co-Organizer status) --- thương hiệu và logo được hiển thị đồng hành nổi bật trên toàn bộ ấn phẩm số/in ấn, backdrop chính, website và kỷ yếu cuộc thi.
+    \item Được chỉ định \textbf{01 vị trí đại diện} tham gia Hội đồng Đánh giá Kỹ thuật Quốc tế (International Technical Evaluation Board) và Hội đồng Giám khảo.
+    \item \textbf{Miễn phí đăng ký hoàn toàn (Full-access)} cho tối đa \textbf{hai (02) đội thi sinh viên chính thức} từ đơn vị, không phải đóng thêm bất kỳ khoản phí tham gia nào.
+    \item Ưu tiên gian hàng trưng bày công nghệ tại khu vực Triển lãm Đổi mới sáng tạo \& Robotics trong suốt thời gian diễn ra giải đấu.
+\end{itemize}
+
+\item \textbf{Đăng ký Đội thi Độc lập (Independent Team Entries):}\\
+Áp dụng cho các đội thi đăng ký tự do từ các trường đại học:
+\begin{itemize}
+    \item \textbf{Đội thi trong nước (Việt Nam):} \textbf{2.500.000 VNĐ / đội} ($\approx$\$100 USD phí cam kết và cấp thẻ tác nghiệp vận hành).
+    \item \textbf{Đội thi quốc tế:} \textbf{\$350 USD / đội} (hoặc gói combo \textbf{\$500 USD cho 02 đội} đăng ký từ cùng một trường/viện).
+\end{itemize}
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{lp{6.2cm}p{4.8cm}}
+\toprule
+\textbf{Hạng mục đăng ký} & \textbf{Mức lệ phí / Đóng góp} & \textbf{Quyền lợi chính} \\
+\midrule
+\textbf{Đối tác Học thuật Đồng tổ chức} & \textbf{\$5.000 USD} / Đơn vị & Tư cách Đồng tổ chức, co-branding, 1 ghế Hội đồng Kỹ thuật, miễn phí 2 đội thi \\
+\textbf{Đội thi trong nước (Việt Nam)} & \textbf{2.500.000 VNĐ} / đội ($\approx$\$100 USD) & 1 đội tham gia, Starter Kit SDKs, quyền tích hợp sân đấu \\
+\textbf{Đội thi quốc tế (Đơn lẻ)} & \textbf{\$350 USD} / đội & 1 đội tham gia, Starter Kit SDKs, quyền tích hợp sân đấu \\
+\textbf{Đội thi quốc tế (Gói 02 đội)} & \textbf{\$500 USD} / 02 đội & 2 đội tham gia từ cùng 1 trường/viện \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.2cm}
+\noindent\textbf{Quyền lợi chung cho tất cả các đội thi hợp lệ:}\\
+Tất cả các đội thi đã đăng ký và được cấp thẻ tác nghiệp (cả các đội thuộc Trường Đối tác lẫn Đội Độc lập) đều được hưởng trọn vẹn:
+\begin{itemize}
+\item Thẻ tác nghiệp chính thức truy cập khu vực sân đấu (Arena) và khu kỹ thuật (Pit Area) cho toàn bộ thành viên và giảng viên hướng dẫn.
+\item Trọn bộ gói công cụ Starter Kit mã nguồn mở (SDK Python và C++ cho giao thức CPAS Agent Beacon Protocol -- CABP).
+\item Các khung giờ hiệu chuẩn và thử nghiệm thực địa chính thức trong sân đấu với hệ thống định vị mặt đất UWB/VIO độ chính xác cao.
+\item Giấy chứng nhận tham gia chính thức của Cuộc thi / Kỷ niệm chương và quyền tham dự các workshop kỹ thuật chuyên sâu.
+\end{itemize}
+
+% ============================================================
+\section{THỜI LƯỢNG VÀ THỜI GIAN TRẬN ĐẤU}
+
+\begin{itemize}
+\item \textbf{Track chuẩn (Single-UAV):} Tối đa \textbf{05 phút} (300 giây).
+\item \textbf{Track Coordinated Ops:} Tối đa \textbf{07 phút} (420 giây).
+\item \textbf{Thời gian thiết lập:} Mỗi đội được cấp 60 giây để chuẩn bị trước khi đồng hồ bắt đầu.
+\end{itemize}
+
+% ============================================================
+\section{THÔNG SỐ KỸ THUẬT CHI TIẾT SÂN THI ĐẤU}
+
+\subsection*{1. Đặc điểm mô hình kiện hàng lớn}
+Khối cứng hình lập phương $0.3 \times 0.3 \times 0.3$ mét, tổng chiều cao tính cả tay cầm $450$ mm, trọng lượng $300$ gram.
+
+\subsection*{2. Chuẩn hóa Điểm Giao hàng}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Điểm} & \textbf{Màu sắc} & \textbf{Đường kính} & \textbf{Mã màu HEX} \\
+\midrule
+D1, D2 & Đỏ & 1000 mm & \texttt{\#FC2A1B} \\
+D3, D4 & Vàng & 600 mm & \texttt{\#FAFF37} \\
+D5 & Xanh dương & 400 mm & \texttt{\#3C00FB} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{3. Mã QR cho hạng mục Coordinated Ops}
+Mỗi Điểm Giao hàng D1–D5 được dán một mã QR kích thước chuẩn \textbf{$15 \times 15$ cm} tại tâm điểm, mã hóa định danh vị trí (ví dụ: chuỗi văn bản \texttt{"D1"}, \texttt{"D2"}...).
+
+\subsection*{4. Vật liệu thi đấu}
+Kiện hàng nhỏ sử dụng bóng tennis tiêu chuẩn ($\varnothing 65.41$–$68.58$ mm, khối lượng $56.0$–$59.4$ g).
+
+% ============================================================
+\section{YÊU CẦU KỸ THUẬT GIAO THỨC CABP (CHUẨN HÓA)}
+
+Giao thức CPAS Agent Beacon Protocol (CABP) chạy trên UDP Broadcast qua cổng mặc định \texttt{14555}:
+
+\subsection*{1. Hai loại bản tin bắt buộc}
+
+\paragraph{(a) Bản tin trạng thái định kỳ (Periodic Beacon — 5 Hz)}
+Phát liên tục chu kỳ $200$ ms trong suốt thời gian bay. Kích thước 31 bytes nhị phân:
+\begin{center}
+\begin{tabular}{p{3.2cm}p{3.0cm}p{7.5cm}}
+\toprule
+\textbf{Trường} & \textbf{Kiểu dữ liệu} & \textbf{Mô tả} \\
+\midrule
+\texttt{agent\_id} & uint16 & Định danh UAV trong trận đấu \\
+\texttt{seq\_num} & uint32 & Số thứ tự tăng dần phát hiện mất gói \\
+\texttt{agent\_state} & enum (uint8) & IDLE (0), EXECUTING (1), RETURNING (2), LANDING (3), EMERGENCY (4) \\
+\texttt{intent} & enum (uint8) & HOVER (0), GO\_TO\_POINT (1), PICKUP (2), DELIVER (3), RETURN\_HOME (4), LAND (5) \\
+\texttt{timestamp} & uint64 & Thời điểm phát (ms) \\
+\texttt{position (x,y,z)} & float32 $\times$ 3 & Tọa độ trong hệ quy chiếu sân đấu (mét) \\
+\texttt{battery\_critical} & bool & Cờ báo pin dưới ngưỡng an toàn (0 hoặc 1) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{(b) Bản tin sự kiện (\texttt{mission\_event})}
+Phát lặp 3 lần khi UAV-A đặt kiện hàng thành công (Giai đoạn 1). Kích thước 16 bytes:
+\begin{center}
+\begin{tabular}{p{3.2cm}p{3.0cm}p{7.5cm}}
+\toprule
+\textbf{Trường} & \textbf{Kiểu dữ liệu} & \textbf{Mô tả} \\
+\midrule
+\texttt{agent\_id} & uint16 & Nguồn phát sự kiện (UAV-A) \\
+\texttt{event\_type} & enum (uint8) & 1 = \texttt{PACKAGE\_PLACED} \\
+\texttt{location\_id} & uint8 & Định danh vị trí (1=D1, 2=D2, 3=D3, 4=D4, 5=D5) \\
+\texttt{timestamp} & uint64 & Thời điểm sự kiện (ms) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{2. Ngưỡng thời gian chờ (Timeout chuẩn hóa)}
+\begin{itemize}
+\item Ngưỡng chờ bản tin \texttt{mission\_event}: \textbf{$3.0$ giây}. Quá thời hạn này, UAV-B tự động chuyển sang Đường Cơ bản (quét mã QR).
+\item Ngưỡng phát hiện mất kết nối định kỳ: \textbf{$500$ mili-giây}.
+\end{itemize}
+
+\subsection*{3. Nguyên tắc an toàn Authority Monotonicity}
+Bản tin CABP chỉ có vai trò đề xuất điểm đích. Quyền điều khiển chuyển động sau cùng thuộc về Flight Controller. Tuyệt đối không để sự cố mạng làm UAV mất kiểm soát hoặc treo hệ thống.
+
+% ============================================================
+\section{PHỤ LỤC: DANH MỤC THÔNG SỐ KỸ THUẬT CHÍNH THỨC ĐÃ PHÊ DUYỆT}
+
+Toàn bộ 11 thông số kỹ thuật đã được Hội đồng Chuyên môn và Ban Tổ chức phê duyệt chính thức cho ngày thi đấu 20, 21 - 09 - 2027:
+
+\begin{longtable}{p{1.0cm}p{6.5cm}p{6.5cm}}
+\toprule
+\textbf{STT} & \textbf{Thông số kỹ thuật} & \textbf{Giá trị phê duyệt chính thức} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{STT} & \textbf{Thông số kỹ thuật} & \textbf{Giá trị phê duyệt chính thức} \\
+\midrule
+\endhead
+1 & Số điểm D bốc thăm tập ứng viên & \textbf{03 trong 05 điểm} (3/5 D1–D5) \\
+2 & Quy trình xác minh mã nguồn UAV-B & Nộp mã băm \textbf{SHA-256} trước giờ đấu 30 phút \\
+3 & Cửa sổ thời gian Giai đoạn 1 ($T_1$) & \textbf{90 giây} \\
+4 & Cửa sổ thời gian Giai đoạn 2 ($T_2$) & \textbf{120 giây} \\
+5 & Ngưỡng timeout chờ \texttt{mission\_event} & \textbf{3.0 giây} (sau đó tự động fallback) \\
+6 & Tổng thời gian trận Coordinated Ops & \textbf{07 phút} (420 giây) \\
+7 & Điểm thưởng Coordinated Ops & \textbf{+60đ} (Bonus) / \textbf{+40đ} (Cơ bản) / \textbf{+10đ} (Một phần) / \textbf{+10đ} (An toàn) \\
+8 & Mức phạt va chạm 2 UAV & \textbf{Trừ 20 điểm và dừng ngay trận đấu} \\
+9 & Số nhân sự trong sân (Coordinated Ops) & Tối đa \textbf{02 người} (01 phi công + 01 giám sát GCS E-Stop) \\
+10 & Kích thước mã QR dán tại D1–D5 & Tiêu chuẩn \textbf{$15 \times 15$ cm} \\
+11 & Tần suất phát Periodic Beacon & Tối thiểu \textbf{5 Hz}; Timeout mất kết nối \textbf{500 ms} \\
+\bottomrule
+\end{longtable}
+
+\vspace{1cm}
+\noindent\textit{Ban Tổ chức UAV Contest 2027 — Phòng Thí nghiệm CPAS Lab, Trường Đại học Tôn Đức Thắng.}
+
+\end{document}

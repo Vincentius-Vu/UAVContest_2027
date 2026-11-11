@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+
+# LaTeX build artifacts (keep .tex and compiled .pdf)
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# Office / Word / Excel temporary lock files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+*.tmp
+
+# Large video files (>100 MB GitHub limit — host on Drive/YouTube/Releases)
+Video Demo/*.mp4
+*.mp4
+*.mov
+
+# OS & Editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

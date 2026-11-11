@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UAV Contest 2027 — Three.js 3D Arena &amp; Scenario Simulator (CPAS Lab)</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="badge">CPAS LAB • TDTU</span>
+        <div>
+          <h1>UAV CONTEST 2027 — 3D ARENA &amp; MISSION SIMULATOR</h1>
+          <p class="subtitle">Sân chuẩn 12.0 × 24.0 m • Trần 5.0 m • CABP v0.3 (UDP 14555) • WS5 Reference-Separated Replay</p>
+        </div>
+      </div>
+
+      <div class="topbar-controls">
+        <div class="control-group">
+          <label for="scenarioSelect">Kịch bản:</label>
+          <select id="scenarioSelect"></select>
+        </div>
+        <div class="control-group">
+          <label for="cameraSelect">Góc nhìn:</label>
+          <select id="cameraSelect">
+            <option value="overview">Toàn cảnh 3D (Isometric)</option>
+            <option value="top">Nhìn thẳng từ trên (BOC 2D Map)</option>
+            <option value="follow_a">Bám theo UAV-A</option>
+            <option value="follow_b">Bám theo UAV-B</option>
+            <option value="downward_a">Camera bụng UAV-A (Edge CV / QR)</option>
+            <option value="downward_b">Camera bụng UAV-B (Edge CV / QR)</option>
+          </select>
+        </div>
+        <button id="btnResetView" class="btn btn-secondary" title="Đặt lại góc nhìn">Đặt lại Camera</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="viewport-wrap">
+        <div id="viewport"></div>
+
+        <!-- Downward CV Camera PIP -->
+        <div id="pipContainer" class="pip-card hidden">
+          <div class="pip-header">
+            <span>DOWNWARD CV CAM (PREVIEW)</span>
+            <span id="pipTargetLabel">UAV-A</span>
+          </div>
+          <div id="pipCanvasHost"></div>
+        </div>
+
+        <!-- Floating Live Safety & Score HUD -->
+        <div class="hud-overlay">
+          <div class="hud-card">
+            <div class="hud-label">THỜI GIAN TRẬN</div>
+            <div id="hudTime" class="hud-value mono">000.0 / 180.0 s</div>
+          </div>
+          <div class="hud-card">
+            <div class="hud-label">ĐIỂM MÔ PHỎNG</div>
+            <div id="hudScore" class="hud-value accent mono">0 / 90 đ</div>
+          </div>
+          <div class="hud-card" id="hudSafetyCard">
+            <div class="hud-label">AN TOÀN &amp; KHOẢNG CÁCH</div>
+            <div id="hudSafety" class="hud-value ok mono">ĐẠT • D_MIN OK</div>
+          </div>
+          <div class="hud-card" id="hudCabpCard">
+            <div class="hud-label">TRẠNG THÁI CABP (0xCB)</div>
+            <div id="hudCabp" class="hud-value mono">STANDBY</div>
+          </div>
+        </div>
+
+        <!-- Playback Bar -->
+        <div class="playback-bar">
+          <button id="btnPlayPause" class="btn btn-primary">▶ Chạy</button>
+          <button id="btnRestart" class="btn btn-secondary">↺ Đầu</button>
+          <input id="timeSlider" type="range" min="0" max="180" step="0.1" value="0" />
+          <div class="speed-group">
+            <span>Tốc độ:</span>
+            <select id="speedSelect">
+              <option value="1">1x (Thực tế)</option>
+              <option value="2">2x</option>
+              <option value="5" selected>5x</option>
+              <option value="10">10x</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <div class="panel">
+          <h2>Mô tả Kịch bản</h2>
+          <p id="scenarioDesc" class="muted"></p>
+        </div>
+
+        <div class="panel">
+          <h2>Telemetry UAV (Hệ tọa độ ENU)</h2>
+          <div id="telemetryList" class="telemetry-list"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Lớp hiển thị Kỹ thuật</h2>
+          <div class="toggle-grid">
+            <label><input type="checkbox" id="chkNetting" checked /> Lưới an toàn &amp; trần 5.0 m</label>
+            <label><input type="checkbox" id="chkAltBand" checked /> Dải trần tự động Pha 2 (3.0–5.0 m)</label>
+            <label><input type="checkbox" id="chkCameras" /> Vùng phủ 6 Camera Overhead (BOC GT)</label>
+            <label><input type="checkbox" id="chkUwb" checked /> 4 Trụ UWB ngoài vành đai</label>
+            <label><input type="checkbox" id="chkTrails" checked /> Quỹ đạo &amp; vệt bay</label>
+            <label><input type="checkbox" id="chkSafetyHalo" checked /> Vòng cảnh báo D_MIN = 1.5 m</label>
+            <label><input type="checkbox" id="chkPipCam" /> Cửa sổ phụ Camera bụng UAV</label>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>WS5 Replay &amp; Tách hệ quy chiếu</h2>
+          <p class="muted small">
+            Tải riêng 2 file JSONL theo nguyên tắc phân tách <strong>Estimated_Position (CABP)</strong> và <strong>Ground_Truth (BOC)</strong>.
+          </p>
+          <div class="file-inputs">
+            <label class="file-btn">
+              CABP Log (.jsonl)
+              <input type="file" id="fileCabpLog" accept=".jsonl,.txt,.json" />
+            </label>
+            <label class="file-btn">
+              Ground Truth (.jsonl)
+              <input type="file" id="fileGtLog" accept=".jsonl,.txt,.json" />
+            </label>
+          </div>
+          <div class="replay-actions">
+            <button id="btnLoadSampleReplay" class="btn btn-accent">Nạp mẫu WS5 Replay (có lỗi D_MIN)</button>
+            <button id="btnLiveBridge" class="btn btn-secondary">Kết nối CABP UDP 14555 (WS)</button>
+          </div>
+          <div id="replayStatus" class="status-pill muted">Đang chạy kịch bản chuẩn MATLAB</div>
+        </div>
+
+        <div class="panel">
+          <h2>Nhật ký Sự kiện &amp; Chấm điểm</h2>
+          <ul id="eventLog" class="event-log"></ul>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

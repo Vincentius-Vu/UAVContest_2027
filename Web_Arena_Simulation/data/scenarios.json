@@ -1,0 +1,270 @@
+{
+  "schema_version": "1.0",
+  "arena": {
+    "length_x_m": 24.0,
+    "width_y_m": 12.0,
+    "ceiling_z_m": 5.0,
+    "phase2_min_z_m": 3.0,
+    "phase2_max_z_m": 5.0,
+    "d_min_m": 1.5,
+    "cabp_timeout_s": 3.0,
+    "depot": { "x_min": -12.0, "x_max": -8.5, "y_min": -6.0, "y_max": 6.0 },
+    "pickup": { "x_min": 7.5, "x_max": 12.0, "y_min": -6.0, "y_max": 6.0 },
+    "relay": { "x_min": -1.5, "x_max": 1.5, "y_min": -1.5, "y_max": 1.5 },
+    "pedestals": [
+      { "id": "P1", "x": 9.5, "y": -3.0, "z": 1.0, "hasCargo": true },
+      { "id": "P2", "x": 9.5, "y": 0.0, "z": 1.0, "hasCargo": true },
+      { "id": "P3", "x": 9.5, "y": 3.0, "z": 1.0, "hasCargo": true }
+    ],
+    "acc_gates": [
+      { "id": "ACC1", "x": -5.0, "y": -2.5, "z": 1.7, "inner_diameter": 1.6, "top_z": 2.6, "direction": "outbound" },
+      { "id": "ACC2", "x": 3.0, "y": -2.5, "z": 1.7, "inner_diameter": 1.6, "top_z": 2.6, "direction": "outbound" },
+      { "id": "ACC3", "x": 3.0, "y": 2.5, "z": 1.7, "inner_diameter": 1.6, "top_z": 2.6, "direction": "return" },
+      { "id": "ACC4", "x": -5.0, "y": 2.5, "z": 1.7, "inner_diameter": 1.6, "top_z": 2.6, "direction": "return" }
+    ],
+    "delivery_points": [
+      { "id": "D1", "x": -2.5, "y": -3.5, "z": 0.1, "diameter": 1.0, "color": "#FC2A1B", "label": "D1", "mobile": false },
+      { "id": "D2", "x": -3.0, "y": 1.8, "z": 0.1, "diameter": 1.0, "color": "#FC2A1B", "label": "D2", "mobile": true },
+      { "id": "D3", "x": 0.0, "y": 0.0, "z": 0.1, "diameter": 0.6, "color": "#FAFF37", "label": "D3", "mobile": false },
+      { "id": "D4", "x": 1.5, "y": -2.5, "z": 0.1, "diameter": 0.6, "color": "#FAFF37", "label": "D4", "mobile": false },
+      { "id": "D5", "x": 2.5, "y": 3.5, "z": 0.1, "diameter": 0.4, "color": "#3C00FB", "label": "D5", "mobile": false }
+    ],
+    "uwb_anchors": [
+      { "id": "UWB-1", "x": -12.5, "y": -6.5, "z_top": 3.5 },
+      { "id": "UWB-2", "x": 12.5, "y": -6.5, "z_top": 3.5 },
+      { "id": "UWB-3", "x": 12.5, "y": 6.5, "z_top": 3.5 },
+      { "id": "UWB-4", "x": -12.5, "y": 6.5, "z_top": 3.5 }
+    ],
+    "overhead_cameras": [
+      { "id": "CAM-1", "x": -10.0, "y": 0.0, "z": 5.0, "target": [-10.0, 0.0, 0.0], "zone": "Depot" },
+      { "id": "CAM-2", "x": -5.0, "y": 0.0, "z": 5.0, "target": [-5.0, 0.0, 1.7], "zone": "ACC1/ACC4" },
+      { "id": "CAM-3", "x": 3.0, "y": 0.0, "z": 5.0, "target": [3.0, 0.0, 1.7], "zone": "ACC2/ACC3" },
+      { "id": "CAM-4", "x": 0.0, "y": -1.5, "z": 5.0, "target": [0.0, -1.5, 0.1], "zone": "Delivery South" },
+      { "id": "CAM-5", "x": 0.0, "y": 2.0, "z": 5.0, "target": [0.0, 2.0, 0.1], "zone": "Delivery North / D2" },
+      { "id": "CAM-6", "x": 9.5, "y": 0.0, "z": 5.0, "target": [9.5, 0.0, 1.0], "zone": "Pickup P1-P3" }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "phase1",
+      "name": "Track Chuẩn — Pha 1: Lấy hàng qua ACC1–ACC4",
+      "subtitle": "Thủ công/Bán tự động • 180s (3.0 phút) • Kiện hàng 0.3m (300g) tại P2",
+      "duration": 180.0,
+      "enforce_altitude_band": false,
+      "mobile_receiver_active": false,
+      "max_score": 90,
+      "events": [
+        { "t": 10.0, "type": "PHASE", "label": "Cất cánh Depot đạt tâm cổng 1.70 m", "points": 0 },
+        { "t": 28.0, "type": "SCORE", "label": "Vượt cổng ACC1", "points": 5 },
+        { "t": 55.0, "type": "SCORE", "label": "Vượt cổng ACC2", "points": 5 },
+        { "t": 105.0, "type": "CARGO_PICKUP", "uav": "UAV-A", "pedestal": "P2", "label": "Khóa ngàm gắp kiện hàng 300g tại P2", "points": 0 },
+        { "t": 138.0, "type": "SCORE", "label": "Vượt cổng ACC3", "points": 5 },
+        { "t": 158.0, "type": "SCORE", "label": "Vượt cổng ACC4", "points": 5 },
+        { "t": 172.0, "type": "CARGO_DROP", "uav": "UAV-A", "pos": [-10.0, 0.0, 0.15], "label": "Đặt kiện hàng an toàn về Depot", "points": 60 },
+        { "t": 180.0, "type": "SCORE", "label": "Hạ cánh chính xác tại Depot", "points": 10 }
+      ],
+      "uavs": [
+        {
+          "id": "UAV-A",
+          "label": "UAV-A (Track Chuẩn Pha 1)",
+          "color": "#06b6d4",
+          "waypoints": [
+            { "t": 0.0, "pos": [-10.0, -2.5, 0.15], "state": "IDLE", "intent": "HOVER" },
+            { "t": 10.0, "pos": [-10.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 18.0, "pos": [-7.5, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 28.0, "pos": [-5.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 40.0, "pos": [-1.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 55.0, "pos": [3.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 68.0, "pos": [7.0, -1.2, 1.70], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 80.0, "pos": [9.5, 0.0, 1.70], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 90.0, "pos": [9.5, 0.0, 1.32], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 105.0, "pos": [9.5, 0.0, 1.32], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 115.0, "pos": [9.5, 0.0, 1.70], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 126.0, "pos": [7.0, 2.5, 1.70], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 138.0, "pos": [3.0, 2.5, 1.70], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 148.0, "pos": [-1.0, 2.5, 1.70], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 158.0, "pos": [-5.0, 2.5, 1.70], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 166.0, "pos": [-8.5, 0.0, 1.70], "state": "RETURNING", "intent": "DELIVER" },
+            { "t": 172.0, "pos": [-10.0, 0.0, 1.20], "state": "RETURNING", "intent": "DELIVER" },
+            { "t": 175.0, "pos": [-10.0, -2.5, 1.00], "state": "LANDING", "intent": "LAND" },
+            { "t": 178.0, "pos": [-10.0, -2.5, 0.40], "state": "LANDING", "intent": "LAND" },
+            { "t": 180.0, "pos": [-10.0, -2.5, 0.15], "state": "IDLE", "intent": "LAND" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phase2",
+      "name": "Track Chuẩn — Pha 2: Giao hàng Tự động 100% (Chung kết)",
+      "subtitle": "Tự động hoàn toàn • 210s (3.5 phút) • Trần 3.0–5.0m • D2 Mobile Receiver 10 cm/s",
+      "duration": 210.0,
+      "enforce_altitude_band": true,
+      "mobile_receiver_active": true,
+      "max_score": 200,
+      "mobile_cart": [
+        { "t": 0.0, "pos": [-3.0, 1.8, 0.08] },
+        { "t": 60.0, "pos": [3.0, 1.8, 0.08] },
+        { "t": 120.0, "pos": [-3.0, 1.8, 0.08] },
+        { "t": 180.0, "pos": [3.0, 1.8, 0.08] },
+        { "t": 210.0, "pos": [0.0, 1.8, 0.08] }
+      ],
+      "events": [
+        { "t": 15.0, "type": "SCORE", "label": "Cất cánh tự động đạt ≥ 3.0 m", "points": 10 },
+        { "t": 45.0, "type": "BALL_DROP", "target": "D1", "pos": [-2.5, -3.5, 0.1], "label": "Thả bóng trúng D1 cố định (Ø1.0m)", "points": 10 },
+        { "t": 85.0, "type": "BALL_DROP", "target": "D2", "pos": [0.0, 1.8, 0.18], "label": "Bám bắt & thả trúng D2 Mobile Receiver (10 cm/s)", "points": 50 },
+        { "t": 115.0, "type": "BALL_DROP", "target": "D3", "pos": [0.0, 0.0, 0.1], "label": "Thả bóng trúng D3 (Vàng Ø0.6m)", "points": 30 },
+        { "t": 145.0, "type": "BALL_DROP", "target": "D4", "pos": [1.5, -2.5, 0.1], "label": "Thả bóng trúng D4 (Vàng Ø0.6m)", "points": 30 },
+        { "t": 175.0, "type": "BALL_DROP", "target": "D5", "pos": [2.5, 3.5, 0.1], "label": "Thả bóng trúng D5 (Xanh Ø0.4m)", "points": 50 },
+        { "t": 210.0, "type": "SCORE", "label": "RTL & Hạ cánh tự động chính xác tâm Depot", "points": 20 }
+      ],
+      "uavs": [
+        {
+          "id": "UAV-A",
+          "label": "UAV Delivery (Pha 2 Auto)",
+          "color": "#f59e0b",
+          "waypoints": [
+            { "t": 0.0, "pos": [-10.0, 0.0, 0.15], "state": "IDLE", "intent": "HOVER" },
+            { "t": 15.0, "pos": [-10.0, 0.0, 3.50], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 30.0, "pos": [-6.0, -2.0, 3.40], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 45.0, "pos": [-2.5, -3.5, 3.30], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 62.0, "pos": [-0.5, -1.0, 3.40], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 85.0, "pos": [0.5, 1.8, 3.30], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 115.0, "pos": [0.0, 0.0, 3.25], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 145.0, "pos": [1.5, -2.5, 3.30], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 175.0, "pos": [2.5, 3.5, 3.30], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 185.0, "pos": [0.0, 1.5, 3.50], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 195.0, "pos": [-6.0, 0.5, 3.50], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 202.0, "pos": [-10.0, 0.0, 3.50], "state": "LANDING", "intent": "LAND" },
+            { "t": 205.0, "pos": [-10.0, 0.0, 1.20], "state": "LANDING", "intent": "LAND" },
+            { "t": 208.0, "pos": [-10.0, 0.0, 0.40], "state": "LANDING", "intent": "LAND" },
+            { "t": 210.0, "pos": [-10.0, 0.0, 0.15], "state": "IDLE", "intent": "LAND" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "coop_bonus",
+      "name": "Coordinated Ops — Đường Bonus (CABP Thành công)",
+      "subtitle": "2 UAV Tiếp sức • 240s • CABP mission_event < 3.0s → +60đ Bonus + 10đ An toàn (≥1.5m)",
+      "duration": 240.0,
+      "enforce_altitude_band": false,
+      "mobile_receiver_active": false,
+      "max_score": 70,
+      "cabp_mode": "BONUS",
+      "events": [
+        { "t": 75.0, "type": "CARGO_PICKUP", "uav": "UAV-A", "pedestal": "P1", "label": "UAV-A gắp kiện hàng tại P1", "points": 0 },
+        { "t": 114.0, "type": "CABP_TX", "uav": "UAV-A", "target": "D3", "pos": [0.0, 0.0, 0.15], "label": "UAV-A đặt hàng tại D3 & phát CABP mission_event (3x, 0xCB)", "points": 0 },
+        { "t": 114.5, "type": "CABP_RX", "uav": "UAV-B", "target": "D3", "label": "UAV-B nhận CABP sau 0.5s (≤ 3.0s) → Kích hoạt Đường Bonus!", "points": 0 },
+        { "t": 185.0, "type": "CARGO_PICKUP", "uav": "UAV-B", "pedestal": "D3", "label": "UAV-B gắp kiện hàng tiếp sức tại D3", "points": 0 },
+        { "t": 240.0, "type": "SCORE", "label": "Hoàn thành Đường Bonus (+60đ) + Khoảng cách ≥ 1.5m (+10đ)", "points": 70 }
+      ],
+      "uavs": [
+        {
+          "id": "UAV-A",
+          "label": "UAV-A (Đặt hàng — Manual)",
+          "color": "#06b6d4",
+          "waypoints": [
+            { "t": 0.0, "pos": [-10.0, -2.5, 0.15], "state": "IDLE", "intent": "HOVER" },
+            { "t": 8.0, "pos": [-10.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 14.0, "pos": [-7.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 20.0, "pos": [-5.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 27.0, "pos": [-1.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 35.0, "pos": [3.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 44.0, "pos": [7.0, -2.8, 1.70], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 52.0, "pos": [9.5, -3.0, 1.70], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 58.0, "pos": [9.5, -3.0, 1.32], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 75.0, "pos": [9.5, -3.0, 1.32], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 83.0, "pos": [9.5, -3.0, 1.70], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 95.0, "pos": [5.0, -1.5, 1.70], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 106.0, "pos": [0.0, 0.0, 1.00], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 114.0, "pos": [0.0, 0.0, 0.38], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 120.0, "pos": [0.0, -1.8, 1.70], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 130.0, "pos": [-5.0, -2.5, 1.70], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 140.0, "pos": [-10.0, -2.5, 1.50], "state": "LANDING", "intent": "LAND" },
+            { "t": 146.0, "pos": [-10.0, -2.5, 0.40], "state": "LANDING", "intent": "LAND" },
+            { "t": 150.0, "pos": [-10.0, -2.5, 0.15], "state": "IDLE", "intent": "LAND" },
+            { "t": 240.0, "pos": [-10.0, -2.5, 0.15], "state": "IDLE", "intent": "LAND" }
+          ]
+        },
+        {
+          "id": "UAV-B",
+          "label": "UAV-B (Lấy hàng — Autonomous)",
+          "color": "#f59e0b",
+          "waypoints": [
+            { "t": 0.0, "pos": [-10.0, 2.5, 0.15], "state": "IDLE", "intent": "HOVER" },
+            { "t": 114.5, "pos": [-10.0, 2.5, 0.15], "state": "IDLE", "intent": "HOVER" },
+            { "t": 125.0, "pos": [-10.0, 2.5, 3.50], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 138.0, "pos": [-5.0, 1.5, 3.50], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 152.0, "pos": [0.0, 0.0, 3.50], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 160.0, "pos": [0.0, 0.0, 1.50], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 168.0, "pos": [0.0, 0.0, 0.35], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 185.0, "pos": [0.0, 0.0, 0.35], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 195.0, "pos": [0.0, 0.0, 3.50], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 210.0, "pos": [-5.0, 2.0, 3.50], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 222.0, "pos": [-10.0, 2.5, 3.50], "state": "LANDING", "intent": "LAND" },
+            { "t": 230.0, "pos": [-10.0, 2.5, 1.20], "state": "LANDING", "intent": "LAND" },
+            { "t": 236.0, "pos": [-10.0, 2.5, 0.40], "state": "LANDING", "intent": "LAND" },
+            { "t": 240.0, "pos": [-10.0, 2.5, 0.15], "state": "IDLE", "intent": "LAND" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "coop_fallback",
+      "name": "Coordinated Ops — Đường Cơ bản (Fallback Quét QR)",
+      "subtitle": "Mô phỏng rớt gói CABP > 3.0s • UAV-B tự động quét QR tập ứng viên {D1, D3, D5} → +40đ + 10đ",
+      "duration": 265.0,
+      "enforce_altitude_band": false,
+      "mobile_receiver_active": false,
+      "max_score": 50,
+      "cabp_mode": "FALLBACK",
+      "events": [
+        { "t": 75.0, "type": "CARGO_PICKUP", "uav": "UAV-A", "pedestal": "P1", "label": "UAV-A gắp kiện hàng tại P1", "points": 0 },
+        { "t": 114.0, "type": "CABP_TIMEOUT_START", "uav": "UAV-A", "target": "D3", "pos": [0.0, 0.0, 0.15], "label": "UAV-A đặt hàng tại D3 (nhiễu Wi-Fi, gói CABP bị mất!)", "points": 0 },
+        { "t": 117.0, "type": "CABP_TIMEOUT_EXPIRED", "uav": "UAV-B", "label": "Hết timeout 3.0s → UAV-B tự kích hoạt Đường Cơ bản (quét QR {D1, D3, D5})", "points": 0 },
+        { "t": 146.0, "type": "PHASE", "label": "UAV-B quét QR tại D1: trống", "points": 0 },
+        { "t": 168.0, "type": "PHASE", "label": "UAV-B quét QR tại D3: phát hiện kiện hàng!", "points": 0 },
+        { "t": 195.0, "type": "CARGO_PICKUP", "uav": "UAV-B", "pedestal": "D3", "label": "UAV-B gắp kiện hàng tiếp sức tại D3", "points": 0 },
+        { "t": 265.0, "type": "SCORE", "label": "Hoàn thành Đường Cơ bản (+40đ) + An toàn ≥ 1.5m (+10đ)", "points": 50 }
+      ],
+      "uavs": [
+        {
+          "id": "UAV-A",
+          "label": "UAV-A (Đặt hàng — Manual)",
+          "color": "#06b6d4",
+          "waypoints": [
+            { "t": 0.0, "pos": [-10.0, -2.5, 0.15], "state": "IDLE", "intent": "HOVER" },
+            { "t": 8.0, "pos": [-10.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 20.0, "pos": [-5.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 35.0, "pos": [3.0, -2.5, 1.70], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 52.0, "pos": [9.5, -3.0, 1.70], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 75.0, "pos": [9.5, -3.0, 1.32], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 83.0, "pos": [9.5, -3.0, 1.70], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 114.0, "pos": [0.0, 0.0, 0.38], "state": "EXECUTING", "intent": "DELIVER" },
+            { "t": 122.0, "pos": [0.0, -2.0, 1.70], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 135.0, "pos": [-5.0, -2.5, 1.70], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 150.0, "pos": [-10.0, -2.5, 0.15], "state": "IDLE", "intent": "LAND" },
+            { "t": 265.0, "pos": [-10.0, -2.5, 0.15], "state": "IDLE", "intent": "LAND" }
+          ]
+        },
+        {
+          "id": "UAV-B",
+          "label": "UAV-B (Fallback QR Scan)",
+          "color": "#f59e0b",
+          "waypoints": [
+            { "t": 0.0, "pos": [-10.0, 2.5, 0.15], "state": "IDLE", "intent": "HOVER" },
+            { "t": 117.0, "pos": [-10.0, 2.5, 0.15], "state": "IDLE", "intent": "HOVER" },
+            { "t": 127.0, "pos": [-10.0, 2.5, 3.50], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 146.0, "pos": [-2.5, -3.5, 3.30], "state": "EXECUTING", "intent": "GO_TO_POINT" },
+            { "t": 168.0, "pos": [0.0, 0.0, 3.30], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 182.0, "pos": [0.0, 0.0, 0.35], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 195.0, "pos": [0.0, 0.0, 0.35], "state": "EXECUTING", "intent": "PICKUP" },
+            { "t": 208.0, "pos": [0.0, 0.0, 3.50], "state": "RETURNING", "intent": "RETURN_HOME" },
+            { "t": 238.0, "pos": [-10.0, 2.5, 3.50], "state": "LANDING", "intent": "LAND" },
+            { "t": 265.0, "pos": [-10.0, 2.5, 0.15], "state": "IDLE", "intent": "LAND" }
+          ]
+        }
+      ]
+    }
+  ]
+}
